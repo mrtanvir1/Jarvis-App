@@ -9,15 +9,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout Repository
+      uses: actions/checkout@v4
 
     - name: Build with Buildozer
-      uses: ArtemShtepenko/buildozer-action@v1
+      uses: ArtemSBulgakov/buildozer-action@v1
+      id: buildozer
       with:
-        command: buildozer -v android debug
+        command: buildozer android debug
+        buildozer_version: stable
 
     - name: Upload APK Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: Jarvis-APK
-        path: bin/*.apk
+        path: ${{ steps.buildozer.outputs.filename }}
